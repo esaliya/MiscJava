@@ -14,5 +14,34 @@
             <artifactId>jblas</artifactId>
             <version>1.2.3</version>
         </dependency>
+        <dependency>
+            <groupId>habanero-java-lib</groupId>
+            <artifactId>habanero-java-lib</artifactId>
+            <version>0.1-SNAPSHOT</version>
+        </dependency>
     </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.1</version>
+                <configuration>
+                    <source>8</source>
+                    <target>8</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <version>2.0-alpha-2</version>
+                <configuration>
+                    <outputDirectory>
+                        ${project.build.directory}
+                    </outputDirectory>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>
