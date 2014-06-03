@@ -16,5 +16,7 @@ public class StringFormatter {
         float f = 10.3456789f;
         System.out.println(String.format("%.4E",f));
 
+        System.out.println(String.format("%1$-15s%2$-15s%3$-8s%4$-12s%5$-8s%6$-12s%7$-12s%8$-16s%9$-12s%10$-25s%11$-25s%12$-25s", "Duration(ms)", "HPDuration(ms)", "Thread#", "MPIperNode", "Node#", "Pt#/Process", "Pt#/Global", "Run Label", "Run Number", "DataFileName", "CurrentTime", "ProcessorName"));
+
     }
 }
