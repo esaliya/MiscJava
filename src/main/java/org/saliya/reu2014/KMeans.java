@@ -74,6 +74,7 @@ public class KMeans {
             }
             System.out.println();
         }
+
         //Adding the new centers
         double[][] updatedCenters = new double[K][m];
         for (int x = 0; x < K; x++) {
