@@ -2,7 +2,8 @@ package org.saliya.reu2014;
 
 import java.util.Scanner;
 import java.util.ArrayList;
-public class KMeans {
+
+public class KMeans2 {
     public static void main(String[] args) {
         //The Points
         Scanner point = new Scanner(System.in);
@@ -36,18 +37,26 @@ public class KMeans {
             System.out.println();
         }
         System.out.println();
-
-        /* This has to be defined up here. If you put this line
-           inside a loop then for each iteration you are creating
-           a new set of array lists, which is not what we want
-        */
+        double sum = 0;
+        for (int x = 0; x < centers.length; x++) {
+            for (int y = 0; y < centers[0].length; y++) {
+                sum = sum + centers[x][y];
+            }
+        }
+        System.out.println(sum);
+        System.out.println();
         ArrayList[] pointIdsForCenters = new ArrayList[K];
+        for (int i = 0; i < pointIdsForCenters.length; i++) {
+            pointIdsForCenters[i] = new ArrayList();
+        }
+        //do{
         //The Distance
         double a = Double.MAX_VALUE;
         int b = 0;
         double distance = 0.0;
         for (int x = 0; x < N; x++) {
             for (int z = 0; z < K; z++) {
+                distance = 0.0;
                 for (int y = 0; y < m; y++) {
                     distance += Math.pow(points[x][y] - centers[z][y], 2);
                 }
@@ -64,35 +73,29 @@ public class KMeans {
             }
             //Holding The Distance
             pointIdsForCenters[b].add(x);
-            /* You can't directly print the contents of an ArrayList.
-               If you need to do that you'll have to write a loop that
-               goes through the array and print items. See the for loop
-               I've written below
-             */
-            /*System.out.println(pointIdsForCenters[b]);*/
-            for (int i = 0; i < pointIdsForCenters[b].size(); ++i){
-                System.out.print(pointIdsForCenters[b].get(i) + " ");
-            }
-            System.out.println();
-        }
-        //Adding the new centers
-        double[][] updatedCenters = new double[K][m];
-
-        for (int i = 0; i<pointIdsForCenters[b].size(); i++){
-            int value = (int) pointIdsForCenters[b].get(i);
-        }
-
-        for (int x = 0; x < K; x++) {
-            for (int y = 0; y < m; y++) {
-                updatedCenters[x][y] = points[x][y];//I am not done with this equation
-               
-
-                /*updatedCenters[x][y] represents a double value, so if you want to assign something
-                  to it, then it has to be a double value. However, pointIdsForCenters[y] produces an array list,
-                  so this assignment cannot be done.
-                 */
-
-            }
+/* for (int i = 0; i<pointIdsForCenters[b].size(); ++i){
+System.out.println(pointIdsForCenters[b].get(i)+ " ");
+}
+System.out.println();
+}
+double[][] updatedCenters = new double [K][m];
+//Inputing the new update centers
+for (int x = 0; x<K; x++){
+for (int y = 0; y<pointIdsForCenters[b].size(); y++){
+//	updatedCenters[x][y] = points[x][y]
+}
+}
+//Taking the sum of the new centers
+double sum1=0;
+for(int x=0; x<updatedCenters.length; x++){
+for(int y=0; y<updatedCenters[0].length; y++){
+sum1 = sum1+ updatedCenters[x][y];
+}
+}
+System.out.println(sum1);
+System.out.println();
+double end = sum1 - sum;
+//while */
         }
     }
 }
