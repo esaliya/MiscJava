@@ -22,5 +22,6 @@ public class StringFormatter {
 //        final String liTemplate = "%1$s%2$s";
         System.out.println(String.format(liTemplate, "wow", "hi"));
 
+
     }
 }
