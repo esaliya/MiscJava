@@ -1,14 +1,12 @@
 package org.saliya.threads;
 
 import edu.rice.hj.runtime.forkjoin.ForkJoinThreadPool;
-import org.saliya.threads.parallel.Parallel;
 
 import java.util.Random;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
-import static edu.rice.hj.HJ.finalizeHabanero;
-import static edu.rice.hj.HJ.initializeHabanero;
+import static edu.rice.hj.Module0.finalizeHabanero;
+import static edu.rice.hj.Module0.initializeHabanero;
 
 public class Tester {
     static int size;
@@ -32,8 +30,8 @@ public class Tester {
     }
 
     private static void endParallelism() {
-        finalizeHabanero();
         execSvc.shutdown();
+        finalizeHabanero();
     }
 
     private static void setupParallelism() {
