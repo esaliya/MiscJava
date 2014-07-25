@@ -14,7 +14,7 @@ public class SimpleHJLoop {
     public static void main(String[] args) {
         initializeHabanero();
 
-        int size = 4;
+        int size = 7;
         // preparing for three point stencil
         double [] in = new double[size+2];
         double [] out = new double[size];
@@ -32,9 +32,10 @@ public class SimpleHJLoop {
     public static void method1(int size, double [] in, double [] out){
         double t1 = System.currentTimeMillis();
         try {
-            forallChunked(1, size - 1,
+            forallChunked(1, size,
                     (index) -> {
                         out[index - 1] = (in[index - 1] + in[index + 1]) / 2;
+                        System.out.println(Thread.currentThread().getId());
                     }
             );
         } catch (SuspendableException e) {
