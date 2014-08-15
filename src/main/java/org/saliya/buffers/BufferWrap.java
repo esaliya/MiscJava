@@ -7,6 +7,18 @@ import java.util.concurrent.TimeUnit;
 
 public class BufferWrap {
     public static void main(String[] args) {
+        performanceCheck();
+        wrapperCheck();
+    }
+
+    private static void wrapperCheck() {
+        int d0 = 2, d1 = 3;
+        byte [][] arr = new byte[d0][d1];
+//        This does NOT work :)
+//        ByteBuffer buffer = ByteBuffer.wrap(arr);
+    }
+
+    private static void performanceCheck() {
         int size = 100000;
         byte [] arr = new byte[size];
         fillByteArray(arr, (byte)1);
