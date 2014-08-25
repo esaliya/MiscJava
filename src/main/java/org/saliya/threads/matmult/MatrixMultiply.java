@@ -1,20 +1,21 @@
 package org.saliya.threads.matmult;
 
 import com.google.common.base.Stopwatch;
+import com.google.common.primitives.Ints;
 import edu.rice.hj.Module0;
 import edu.rice.hj.api.SuspendableException;
+import edu.rice.hj.runtime.config.HjConfiguration;
 import org.saliya.threads.parallel.Parallel;
 
 import java.util.Random;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.TimeUnit;
 
 import static edu.rice.hj.Module0.finalizeHabanero;
 import static edu.rice.hj.Module0.initializeHabanero;
 
 public class MatrixMultiply {
-    static int poolSize;
     static ExecutorService execSvc;
 
     static void MultiplyMatricesSequential(double[][] matA, double[][] matB, double[][] result) {
@@ -75,7 +76,7 @@ public class MatrixMultiply {
         }
     }
 
-    public static void Multiply(int colCount, int rowCount, int colCount2, boolean hj) throws SuspendableException {
+    public static long Multiply(int colCount, int rowCount, int colCount2, ExecutionType executionType) throws SuspendableException {
         // Set up matrices. Use small values to better view  
         // result matrix. Increase the counts to see greater  
         // speedup in the parallel loop vs. the sequential loop. 
@@ -84,31 +85,34 @@ public class MatrixMultiply {
         double[][] m2 = InitializeMatrix(colCount, colCount2);
         double[][] result = new double[rowCount][colCount2];
 
-        // First do the sequential version.
-        System.out.println("Executing sequential loop...");
-        Stopwatch stopwatch = Stopwatch.createStarted();
-
-        MultiplyMatricesSequential(m1, m2, result);
-        stopwatch.stop();
-        System.out.println("Sequential loop time in milliseconds: " + stopwatch.elapsed(TimeUnit.MILLISECONDS));
-
-        // Reset timer and results matrix.
-        stopwatch.reset();
-        result = new double[rowCount][colCount2];
-
-        // Do the parallel loop.
-        System.out.println("Executing parallel loop... with " + (hj? "hj" : "parallel"));
-        stopwatch.start();
-        if (hj) {
-            MultiplyMatricesHJ(m1, m2, result);
-        } else {
-            MultiplyMatricesParallel(m1,m2,result);
+        long timeInMilliseconds = 0;
+        Stopwatch stopwatch = Stopwatch.createUnstarted();
+        switch (executionType){
+            default:
+            case sequential:
+                stopwatch.start();
+                MultiplyMatricesSequential(m1, m2, result);
+                stopwatch.stop();
+                timeInMilliseconds = stopwatch.elapsed(TimeUnit.MILLISECONDS);
+                stopwatch.reset();
+                break;
+            case habanero:
+                stopwatch.start();
+                MultiplyMatricesHJ(m1, m2, result);
+                stopwatch.stop();
+                timeInMilliseconds = stopwatch.elapsed(TimeUnit.MILLISECONDS);
+                stopwatch.reset();
+                break;
+            case parallel:
+                stopwatch.start();
+                MultiplyMatricesParallel(m1, m2, result);
+                stopwatch.stop();
+                timeInMilliseconds = stopwatch.elapsed(TimeUnit.MILLISECONDS);
+                stopwatch.reset();
+                break;
         }
-        stopwatch.stop();
-        System.out.println("Parallel loop time in milliseconds: " + stopwatch.elapsed(TimeUnit.MILLISECONDS));
 
-        // Keep the console window open in debug mode.
-        System.out.println("Press any key to exit.");
+       return timeInMilliseconds;
     }
 
 
@@ -129,23 +133,63 @@ public class MatrixMultiply {
     }
 
     public static void main(String[] args) throws SuspendableException {
-        if (args[3].equals("hj")) {
-            initializeHabanero();
-            int colCount = Integer.parseInt(args[0]); // default used to be 180
-            int rowCount = Integer.parseInt(args[1]); // default used to be 2000
-            int colCount2 = Integer.parseInt(args[2]); // default used to be 270;
-            Multiply(colCount, rowCount, colCount2, true);
-            finalizeHabanero();
-        } else {
-            poolSize = Integer.parseInt(args[4]);
-            execSvc = Executors.newFixedThreadPool(poolSize);
-            int colCount = Integer.parseInt(args[0]); // default used to be 180
-            int rowCount = Integer.parseInt(args[1]); // default used to be 2000
-            int colCount2 = Integer.parseInt(args[2]); // default used to be 270;
-            Multiply(colCount, rowCount, colCount2, false);
-            execSvc.shutdown();
-        }
+        Integer colCount = Ints.tryParse(args[0]); // default used to be 180
+        colCount = colCount == null ? 180 : colCount;
+        Integer rowCount = Ints.tryParse(args[1]); // default used to be 2000
+        rowCount = rowCount == null ? 2000 : rowCount;
+        Integer colCount2 = Ints.tryParse(args[2]); // default used to be 270
+        colCount2 = colCount2 == null ? 270 : colCount2;
+        Integer iterations = Ints.tryParse(args[3]); // default used to be 100
+        iterations = iterations == null ? 1000 : iterations;
+        Integer skip = Ints.tryParse(args[4]);
+        skip = skip == null ? 100 : skip;
+        Integer poolSize = Ints.tryParse(args[5]);
+        poolSize = poolSize == null ? 8 : poolSize;
 
+        double timeInMilliseconds = 0.0;
+        long t = 0;
+
+        /* Sequential timing *//*
+        for (int i = 0; i < iterations; i++) {
+            t = Multiply(colCount, rowCount, colCount2, ExecutionType.sequential);
+            if (i < skip) continue;
+            timeInMilliseconds += t;
+        }
+        timeInMilliseconds /= (iterations - skip);
+        System.out.println("Average time for " + ExecutionType.sequential + " is " + timeInMilliseconds + "ms");
+        timeInMilliseconds = 0.0;*/
+
+        /* Habanero timing */
+        initializeHabanero();
+        HjConfiguration.printConfiguredOptions();
+        HjConfiguration.SHOW_RUNTIME_STATS = true;
+
+        System.out.println(HjConfiguration.runtime().numWorkerThreads());
+        for (int i = 0; i < iterations; i++) {
+            t = Multiply(colCount, rowCount, colCount2, ExecutionType.habanero);
+            if (i < skip) continue;
+            timeInMilliseconds += t;
+        }
+        timeInMilliseconds /= (iterations - skip);
+        System.out.println("Average time for " + ExecutionType.habanero + " is " + timeInMilliseconds + "ms");
+        timeInMilliseconds = 0.0;
+        finalizeHabanero();
+
+        /* Parallel timing */
+        execSvc = new ForkJoinPool(poolSize);
+        for (int i = 0; i < iterations; i++) {
+            t = Multiply(colCount, rowCount, colCount2, ExecutionType.parallel);
+            if (i < skip) continue;
+            timeInMilliseconds += t;
+        }
+        timeInMilliseconds /= (iterations - skip);
+        System.out.println("Average time for " + ExecutionType.parallel + " is " + timeInMilliseconds + "ms");
+        execSvc.shutdown();
     }
+
+    private enum ExecutionType{
+        sequential, habanero, parallel
+    }
+
 
 }
