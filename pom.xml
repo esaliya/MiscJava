@@ -17,7 +17,7 @@
         <dependency>
             <groupId>habanero-java-lib</groupId>
             <artifactId>habanero-java-lib</artifactId>
-            <version>0.1.1</version>
+            <version>0.1.2-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>ompi</groupId>

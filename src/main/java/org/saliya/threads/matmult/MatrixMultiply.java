@@ -2,9 +2,9 @@ package org.saliya.threads.matmult;
 
 import com.google.common.base.Stopwatch;
 import com.google.common.primitives.Ints;
-import edu.rice.hj.Module0;
 import edu.rice.hj.api.SuspendableException;
 import edu.rice.hj.runtime.config.HjConfiguration;
+import edu.rice.hj.runtime.config.HjSystemProperty;
 import org.saliya.threads.parallel.Parallel;
 
 import java.util.Random;
@@ -14,6 +14,7 @@ import java.util.concurrent.TimeUnit;
 
 import static edu.rice.hj.Module0.finalizeHabanero;
 import static edu.rice.hj.Module0.initializeHabanero;
+import static edu.rice.hj.Module1.forallChunked;
 
 public class MatrixMultiply {
     static ExecutorService execSvc;
@@ -39,7 +40,7 @@ public class MatrixMultiply {
 
         // A basic matrix multiplication.
         // Parallelize the outer loop to partition the source array by rows.
-        Module0.forallChunked(0, matARows-1, (i) ->
+        forallChunked(0, matARows - 1, (i) ->
         {
             for (int j = 0; j < matBCols; j++) {
                 // Use a temporary to improve parallel performance.
@@ -160,9 +161,9 @@ public class MatrixMultiply {
         timeInMilliseconds = 0.0;*/
 
         /* Habanero timing */
+        HjSystemProperty.numWorkers.set(16);
         initializeHabanero();
         HjConfiguration.printConfiguredOptions();
-        HjConfiguration.SHOW_RUNTIME_STATS = true;
 
         System.out.println(HjConfiguration.runtime().numWorkerThreads());
         for (int i = 0; i < iterations; i++) {

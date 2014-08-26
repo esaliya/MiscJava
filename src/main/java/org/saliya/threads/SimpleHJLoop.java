@@ -3,11 +3,12 @@ package org.saliya.threads;
 
 
 import edu.rice.hj.api.SuspendableException;
+
 import java.util.Random;
 
 import static edu.rice.hj.Module0.finalizeHabanero;
-import static edu.rice.hj.Module0.forallChunked;
 import static edu.rice.hj.Module0.initializeHabanero;
+import static edu.rice.hj.Module1.forallChunked;
 
 
 public class SimpleHJLoop {
