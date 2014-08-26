@@ -7,7 +7,6 @@ import mpi.MPIException;
 
 import java.util.Arrays;
 import java.util.concurrent.TimeUnit;
-import java.util.stream.IntStream;
 
 public class BroadcastArrayVsBuffer {
     public static void main(String[] args) throws MPIException {
@@ -22,21 +21,21 @@ public class BroadcastArrayVsBuffer {
         int numPoints = Integer.parseInt(args[1]);
 
         int [] pointCountsForProcesses = getPointCountsForProcesses(numPoints, size);
-        int pointCountForProcess = pointCountsForProcesses[rank];
         int [] pointStartIdxsForProcesses = getPointStartIdxsForProcesses(numPoints, size);
-        double [][] localPoints = new double[pointCountForProcess][];
-        initializePoints(rank, pointDimensions, localPoints);
 
-        double [][] globalPoints = new double[numPoints][pointDimensions];
 
         // No direct way to send a 2D array with MPI
-        gatherLocalPointsUsingArrayAndBcast(comm, size, rank, pointDimensions, pointCountsForProcesses, pointStartIdxsForProcesses, localPoints, globalPoints);
-        gatherLocalPointsUsingArrayAndGather(comm,size, rank, numPoints, pointDimensions, pointCountsForProcesses, pointStartIdxsForProcesses, localPoints, globalPoints);
+        gatherLocalPointsUsingArrayAndBcast(comm, size, rank, pointDimensions, pointCountsForProcesses, pointStartIdxsForProcesses, numPoints);
+        gatherLocalPointsUsingArrayAndGather(comm,size, rank, pointDimensions, pointCountsForProcesses, pointStartIdxsForProcesses, numPoints);
 //        printPoints(rank, globalPoints);
         MPI.Finalize();
     }
 
-    private static void gatherLocalPointsUsingArrayAndBcast(Intracomm comm, int size, int rank, int pointDimensions, int[] pointCountsForProcesses, int[] pointStartIdxsForProcesses, double[][] localPoints, double[][] globalPoints) throws MPIException {
+    private static void gatherLocalPointsUsingArrayAndBcast(Intracomm comm, int size, int rank, int pointDimensions, int[] pointCountsForProcesses, int[] pointStartIdxsForProcesses, int numPoints) throws MPIException {
+        PointData pointData = new PointData(rank, pointDimensions, pointCountsForProcesses[rank], new double[numPoints][pointDimensions]).invoke();
+        double[][] localPoints = pointData.getLocalPoints();
+        double[][] globalPoints = pointData.getGlobalPoints();
+
         double mainDuration = 0.0, flattenDuration = 0.0, explodeDuration = 0.0, bcastDuration = 0.0;
         Stopwatch flattenTimer = Stopwatch.createUnstarted();
         Stopwatch explodeTimer = Stopwatch.createUnstarted();
@@ -87,7 +86,11 @@ public class BroadcastArrayVsBuffer {
         }
     }
 
-    private static void gatherLocalPointsUsingArrayAndGather(Intracomm comm, int size, int rank, int numPoints, int pointDimensions, int[] pointCountsForProcesses, int[] pointStartIdxsForProcesses, double[][] localPoints, double[][] globalPoints) throws MPIException {
+    private static void gatherLocalPointsUsingArrayAndGather(Intracomm comm, int size, int rank, int pointDimensions, int[] pointCountsForProcesses, int[] pointStartIdxsForProcesses, int numPoints) throws MPIException {
+        PointData pointData = new PointData(rank, pointDimensions, pointCountsForProcesses[rank], new double[numPoints][pointDimensions]).invoke();
+        double[][] localPoints = pointData.getLocalPoints();
+        double[][] globalPoints = pointData.getGlobalPoints();
+
         double mainDuration = 0.0, flattenDuration = 0.0, explodeDuration = 0.0, commDuration = 0.0;
         Stopwatch flattenTimer = Stopwatch.createUnstarted();
         Stopwatch explodeTimer = Stopwatch.createUnstarted();
@@ -197,6 +200,38 @@ public class BroadcastArrayVsBuffer {
             for (int j = 1; j < points[i].length; j++) {
                 points[i][j] = i;
             }
+        }
+    }
+
+    private static class PointData {
+        private int rank;
+        private int pointDimensions;
+        private int pointCountsForProcess;
+        private double[][] doubles;
+        private double[][] localPoints;
+        private double[][] globalPoints;
+
+        public PointData(int rank, int pointDimensions, int pointCountsForProcess, double[]... doubles) {
+            this.rank = rank;
+            this.pointDimensions = pointDimensions;
+            this.pointCountsForProcess = pointCountsForProcess;
+            this.doubles = doubles;
+        }
+
+        public double[][] getLocalPoints() {
+            return localPoints;
+        }
+
+        public double[][] getGlobalPoints() {
+            return globalPoints;
+        }
+
+        public PointData invoke() {
+            int pointCountForProcess = pointCountsForProcess;
+            localPoints = new double[pointCountForProcess][];
+            initializePoints(rank, pointDimensions, localPoints);
+            globalPoints = doubles;
+            return this;
         }
     }
 }
