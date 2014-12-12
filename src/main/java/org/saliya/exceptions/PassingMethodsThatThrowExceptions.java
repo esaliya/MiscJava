@@ -1,4 +1,4 @@
-package exceptions;
+package org.saliya.exceptions;
 
 public class PassingMethodsThatThrowExceptions {
     public interface IncrementerSignature{
