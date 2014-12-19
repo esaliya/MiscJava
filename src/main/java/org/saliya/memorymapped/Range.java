@@ -22,7 +22,7 @@ public final class Range implements Serializable {
      * Initializes a new instance of the class.
      *
      * @param start The starting index of the Range.
-     * @param end   The ending index of the Range.
+     * @param end   The ending index (inclusive) of the Range.
      */
     public Range(int start, int end) {
         startIndex = start;
