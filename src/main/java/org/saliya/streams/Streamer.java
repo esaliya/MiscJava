@@ -1,25 +1,10 @@
 package org.saliya.streams;
 
-import com.google.common.base.Strings;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.math.BigDecimal;
-import java.nio.charset.Charset;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.*;
-import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.Arrays;
+import java.util.DoubleSummaryStatistics;
+import java.util.List;
 import java.util.concurrent.ForkJoinPool;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.function.DoubleSupplier;
-import java.util.function.IntSupplier;
-import java.util.regex.Pattern;
-import java.util.stream.CloseableStream;
-import java.util.stream.DoubleStream;
 import java.util.stream.IntStream;
-import java.util.stream.Stream;
 
 /**
  * See
