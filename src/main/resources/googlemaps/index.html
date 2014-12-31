@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        html, body, #googleMap {
+            height: 100%;
+            margin: 0px;
+            padding: 0px
+        }
+    </style>
+    <script src="http://maps.googleapis.com/maps/api/js"></script>
+    <script src="js/jQuery/jquery-1.11.1.js"></script>
+    <script type="text/javascript">
+        window.onload = function () {
+            var mapOptions = {
+                //give latitude and long
+                center: new google.maps.LatLng(7.0, 81.0),
+                zoom: 7,
+                mapTypeId: google.maps.MapTypeId.ROADMAP
+            };
+            var infoWindow = new google.maps.InfoWindow();
+            var map = new google.maps.Map(document.getElementById("googleMap"), mapOptions);
+            /*var ctaLayer = new google.maps.KmlLayer({
+//                url: 'http://gmaps-samples.googlecode.com/svn/trunk/ggeoxml/cta.kml'
+                url: 'http://156.56.93.34/GoogleMapsDummy/kml/usa.kmz'
+//                url: 'http://156.56.93.34/GoogleMapsDummy/kml/doc.kml'
+            });
+            ctaLayer.setMap(map)*/
+
+            var kmzLayer = new google.maps.KmlLayer('http://156.56.93.34/LKA_adm1.kmz');
+            kmzLayer.setMap(map);
+        }
+    </script>
+</head>
+<body>
+<div id="googleMap"></div>
+
+</body>
+</html>
