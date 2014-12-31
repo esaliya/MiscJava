@@ -17,7 +17,7 @@
         <dependency>
             <groupId>habanero-java-lib</groupId>
             <artifactId>habanero-java-lib</artifactId>
-            <version>0.1.2-SNAPSHOT</version>
+            <version>0.1.2</version>
         </dependency>
         <dependency>
             <groupId>ompi</groupId>
@@ -37,6 +37,14 @@
             <version>1.2</version>
         </dependency>
     </dependencies>
+
+    <repositories>
+        <repository>
+            <id>rice-habanero</id>
+            <name>Habanero Repository - Rice University</name>
+            <url>http://www.cs.rice.edu/~vs3/hjlib/code/maven-repo</url>
+        </repository>
+    </repositories>
 
     <build>
         <plugins>

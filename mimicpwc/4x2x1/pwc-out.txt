@@ -1,0 +1,7 @@
+---------------------------------------------------------
+Machine:beaverhomedlinux 4x2x1
+
+==== mpi-cluster(---------------------------------------------------------
+Machine:beaverhomedlinux 4x2x1) ==== Threads:4 Clusters:max-ncent PointCount_Global:1000 ==== no-dist-file (Thu Jul 24 01:22:12 EDT 2014) ==== 
+
+**The great computation**
