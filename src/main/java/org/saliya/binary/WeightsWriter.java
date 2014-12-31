@@ -13,7 +13,7 @@ public class WeightsWriter {
     public static void main(String[] args) {
         int rows = Integer.parseInt(args[0]);
         Path path = Paths.get("weights.bin");
-        try (FileChannel fc = (FileChannel) Files.newByteChannel(path, StandardOpenOption.CREATE_NEW)) {
+        try (FileChannel fc = (FileChannel) Files.newByteChannel(path, StandardOpenOption.WRITE)) {
             MappedByteBuffer mappedBytes = fc.map(FileChannel.MapMode.READ_WRITE, 0,
                                                   rows * rows * Short.BYTES);
             mappedBytes.order(ByteOrder.BIG_ENDIAN);
