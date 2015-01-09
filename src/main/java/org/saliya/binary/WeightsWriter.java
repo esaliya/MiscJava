@@ -13,17 +13,19 @@ import java.nio.file.StandardOpenOption;
 
 public class WeightsWriter {
     public static void main(String[] args) throws IOException {
-        int rows = Integer.parseInt(args[0]);
+//        int rows = Integer.parseInt(args[0]);
+        int rows = 10;
         String file = "weights.bin";
+        Path path = Paths.get(file);
 
-        SeekableByteChannel bc = Files.newByteChannel(Paths.get(file), StandardOpenOption.CREATE);
+        SeekableByteChannel bc = Files.newByteChannel(path, StandardOpenOption.CREATE_NEW);
         ByteBuffer buffer = ByteBuffer.allocateDirect(rows * Short.BYTES);
         buffer.position(0);
         for (int i = 0; i < rows; ++i){
             buffer.putShort((short)1);
         }
         for (int i = 0; i < rows; ++i) {
-            buffer.position(0);
+            buffer.rewind();
             bc.write(buffer);
         }
         bc.close();
