@@ -1,5 +1,7 @@
 package org.saliya.binding;
 
+import org.saliya.common.Utils;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -7,7 +9,7 @@ import java.nio.file.Paths;
 
 public class SimpleBindTest {
     public static void main(String[] args) throws IOException, InterruptedException {
-        System.out.println("I am a simple program doing nothing but busy waiting with PID " + getPid());
+        System.out.println("I am a simple program doing nothing but busy waiting with PID " + Utils.getPid());
         int n = Integer.parseInt(args[0]);
         int delay = Integer.parseInt(args[1]);
         int interval = 100;
@@ -37,13 +39,5 @@ public class SimpleBindTest {
         }
         Files.delete(stop);
         System.out.println();
-    }
-
-    public static String getPid() throws IOException {
-        byte[] bo = new byte[100];
-        String[] cmd = {"bash", "-c", "echo $PPID"};
-        Process p = Runtime.getRuntime().exec(cmd);
-        p.getInputStream().read(bo);
-        return new String(bo);
     }
 }
