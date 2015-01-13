@@ -54,6 +54,7 @@ target/
 *.swo
 *.swp
 *.iml
+*.class
 
 
 # Visual C++ cache files

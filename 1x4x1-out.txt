@@ -1,0 +1,4 @@
+Rank:1 pid:19382 bound to: 10
+Rank:2 pid:19383 bound to: 100
+Rank:3 pid:19384 bound to: 1000
+Rank:0 pid:19381 bound to: 1
