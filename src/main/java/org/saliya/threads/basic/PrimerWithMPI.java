@@ -22,14 +22,18 @@ public class PrimerWithMPI {
         int numThreads = Integer.parseInt(args[0]);
         boolean bind = Boolean.parseBoolean(args[1]);
 
-        /*System.out.println(Runtime.getRuntime().availableProcessors());*/
+        int cusPerNode = Runtime.getRuntime().availableProcessors(); // computing units per node
         int pid = Integer.parseInt(Utils.getPid());
-        System.out.println("Rank:" + rank + " pid:" + pid + " bound to: " + Long.toBinaryString(Utils.getProcAffinityMask(pid)));
+        String affinityMask = Long.toBinaryString(Utils.getProcAffinityMask(pid));
+
+        assert cusPerNode >= affinityMask.length();
+
+        System.out.println("Rank:" + rank + " pid:" + pid + " bound to: " + affinityMask);
 
         double [] results = new double[numThreads];
         Thread [] threads = new Thread[numThreads];
         for (int i = 0; i < numThreads; ++i){
-            threads[i] = new Thread(new BusySqrt(results, i, bind), "BusySqrtThread-" + i);
+            threads[i] = new Thread(new BusySqrt(results, i, affinityMask, bind), "BusySqrtThread-" + i);
             threads[i].start();
         }
 
@@ -70,10 +74,12 @@ public class PrimerWithMPI {
         private final double[] results;
         private final int index;
         private final boolean bind;
+        private final AsProcAffinity affinityStrategy;
 
-        private BusySqrt(double [] results, int index, boolean bind) {
+        private BusySqrt(double [] results, int index, String affinityMask, boolean bind) throws IOException {
             this.results = results;
             this.index = index;
+            this.affinityStrategy = new AsProcAffinity(affinityMask);
             this.bind = bind;
         }
 

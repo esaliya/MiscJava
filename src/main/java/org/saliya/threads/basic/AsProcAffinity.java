@@ -8,7 +8,7 @@ public class AsProcAffinity implements AffinityStrategy {
 
     private int cpuId;
 
-    public AsProcAffinity(int pid) throws IOException {
+    public AsProcAffinity(String affinityMask) throws IOException {
 //        String procAffinityMask = Long.tohUtils.getProcAffinityMask(pid);
     }
 

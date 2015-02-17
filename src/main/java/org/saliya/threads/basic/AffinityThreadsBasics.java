@@ -1,5 +1,7 @@
 package org.saliya.threads.basic;
 
+import net.openhft.affinity.AffinityLock;
+import net.openhft.affinity.AffinitySupport;
 import org.saliya.common.Utils;
 
 import java.io.IOException;
@@ -8,19 +10,16 @@ import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.DoubleSummaryStatistics;
 
-public class AffinityThreads {
-    public static void main(String[] args) throws InterruptedException, IOException {
-//        int numThreads = Integer.parseInt(args[0]);
-//        int numCores = Integer.parseInt(args[1]);
-//        boolean bind = Boolean.parseBoolean(args[2]);
-        int numThreads = 6;
-        int numCores = 4;
+public class AffinityThreadsBasics {
+    public static void main(String[] args) throws IOException, InterruptedException {
+        int numThreads = 5;
         boolean bind = true;
 
-        System.out.println("PID:" + Utils.getPid());
+        AffinitySupport.setThreadId();
+        System.out.println("PID:" + Utils.getPid() + " thread:" + Thread.currentThread().getName() + " native-id:" + Thread.currentThread().getId());
 
-//        AffinityLock al = null;
-//        if (bind) al = AffinityLock.acquireLock();
+        AffinityLock al = AffinityLock.acquireLock();
+
         double [] results = new double[numThreads];
         Thread [] threads = new Thread[numThreads];
         for (int i = 0; i < numThreads; ++i){
@@ -32,11 +31,10 @@ public class AffinityThreads {
             thread.join();
         }
 
-        DoubleSummaryStatistics summary = Arrays.stream(results).collect(DoubleSummaryStatistics::new, DoubleSummaryStatistics::accept, DoubleSummaryStatistics::combine);
+        DoubleSummaryStatistics summary = Arrays.stream(results).collect(DoubleSummaryStatistics::new,
+                DoubleSummaryStatistics::accept, DoubleSummaryStatistics::combine);
         System.out.println(summary);
-//        if (bind && al != null) al.release();
         Files.delete(Paths.get("stop"));
+        al.release();
     }
-
-
 }
