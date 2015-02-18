@@ -26,13 +26,7 @@ public class SimpleExample {
                 });
 
         // Count each word in each batch
-        JavaPairDStream<String, Integer> pairs = words.map(
-                new Function<String, Integer>() {
-
-//                    @Override public Tuple2<String, Integer> call(String s) throws Exception {
-//                        return new Tuple2<String, Integer>(s, 1);
-//                    }
-                });
+        JavaPairDStream<String, Integer> pairs = words.mapToPair(s -> new Tuple2<String, Integer>(s, 1));
         JavaPairDStream<String, Integer> wordCounts = pairs.reduceByKey(
                 new Function2<Integer, Integer, Integer>() {
                     @Override public Integer call(Integer i1, Integer i2) throws Exception {
