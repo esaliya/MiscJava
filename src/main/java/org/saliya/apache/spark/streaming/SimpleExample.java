@@ -1,4 +1,4 @@
-package org.saliya.apachespark.streaming;
+package org.saliya.apache.spark.streaming;
 
 import org.apache.spark.*;
 import org.apache.spark.api.java.function.*;
