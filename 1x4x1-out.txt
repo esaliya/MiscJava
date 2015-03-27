@@ -1,4 +1,9 @@
-Rank:1 pid:19382 bound to: 10
-Rank:2 pid:19383 bound to: 100
-Rank:3 pid:19384 bound to: 1000
-Rank:0 pid:19381 bound to: 1
+Rank: 0 pid: 11599 bound to: 10001 thread : main id: 11603 bound to: 10001
+Rank: 1 pid: 11600 bound to: 100010 thread : main id: 11604 bound to: 100010
+Rank: 3 pid: 11602 bound to: 10001000 thread : main id: 11621 bound to: 10001000
+  Rank: 1 pid: 11600 bound to: 100010 thread : BusySqrtThread-0 id: 11750 bound to: 100010 after: 100010
+  Rank: 0 pid: 11599 bound to: 10001 thread : BusySqrtThread-0 id: 11749 bound to: 10001 after: 10001
+  Rank: 3 pid: 11602 bound to: 10001000 thread : BusySqrtThread-0 id: 11756 bound to: 10001000 after: 10001000
+Rank: 2 pid: 11601 bound to: 1000100 thread : main id: 11605 bound to: 1000100
+  Rank: 2 pid: 11601 bound to: 1000100 thread : BusySqrtThread-0 id: 11760 bound to: 1000100 after: 1000100
+8.826823193692554E9

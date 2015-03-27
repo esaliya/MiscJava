@@ -18,6 +18,8 @@ pat=$tpp$x$ppn$x$nodes
 hostfile=$wd/$pat.hosts
 cat $allhosts | head -$nodes > $hostfile
 echo "Running $pat on `date`" >> status.txt
-$BUILD/bin/mpirun --report-bindings --hostfile $hostfile -np $(($nodes*$ppn)) java $opts -cp $cp org.saliya.threads.basic.PrimerWithMPI $tpp $3 | tee $pat-out.txt
+#$BUILD/bin/mpirun --report-bindings --hostfile $hostfile -np $(($nodes*$ppn)) java $opts -cp $cp org.saliya.threads.basic.PrimerWithMPI $tpp $3 | tee $pat-out.txt
+$BUILD/bin/mpirun --report-bindings --hostfile $hostfile --map-by socket:PE=$(($cpn/$ppn)) -np $(($nodes*$ppn)) java $opts -cp $cp org.saliya.threads.basic.PrimerWithMPI2 $tpp $3 $4 | tee $pat-out.txt
+#$BUILD/bin/mpirun --report-bindings --hostfile $hostfile --map-by socket:PE=2 -np $(($nodes*$ppn)) java $opts -cp $cp org.saliya.threads.basic.PrimerWithMPI2 $tpp $3 | tee $pat-out.txt
 echo "Finished $pat on `date`" >> status.txt
 
