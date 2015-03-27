@@ -1,6 +1,5 @@
 package org.saliya.threads.basic;
 
-import edu.rice.hj.api.SuspendableException;
 import mpi.Intracomm;
 import mpi.MPI;
 import mpi.MPIException;
@@ -14,8 +13,7 @@ import java.util.Arrays;
 import java.util.concurrent.CountDownLatch;
 import java.util.stream.IntStream;
 
-import static edu.rice.hj.Module0.finalizeHabanero;
-import static edu.rice.hj.Module0.initializeHabanero;
+import static edu.rice.hj.Module0.*;
 import static edu.rice.hj.Module1.forallChunked;
 
 public class PrimerWithMPI2 {
@@ -39,10 +37,8 @@ public class PrimerWithMPI2 {
 
         if (useHj) {
             if (rank == 0) System.out.println("***Habanero Java***");
-            initializeHabanero();
             computeWithHJThreads(comm, rank, size, numThreads, bind, cusPerNode, threadAffinityMask, results,
                     output);
-            finalizeHabanero();
         } else {
             if (rank == 0) System.out.println("***Affinity Threads***");
             Thread [] threads = new Thread[numThreads];
@@ -60,17 +56,18 @@ public class PrimerWithMPI2 {
                                              int cusPerNode, String parentThreadAffinityMask, double[] results,
                                              String[] output) {
 
-        try {
-            CountDownLatch latch = new CountDownLatch(numThreads);
-            CountDownLatch go = new CountDownLatch(1);
-            forallChunked(0, numThreads-1, (threadIndex) ->
+        CountDownLatch latch = new CountDownLatch(numThreads);
+        CountDownLatch go = new CountDownLatch(1);
+        launchHabaneroApp(() -> {
+            forallChunked(0, numThreads - 1, (threadIndex) ->
             {
-                /*int bindTo = -1;
+                int bindTo = -1;
                 int count = 0;
-                for (int i = parentThreadAffinityMask.length() - 1; i >=0; --i ){
-                    if (parentThreadAffinityMask.charAt(i) == '1'){
-                        if (count == threadIndex){
+                for (int i = parentThreadAffinityMask.length() - 1; i >= 0; --i) {
+                    if (parentThreadAffinityMask.charAt(i) == '1') {
+                        if (count == threadIndex) {
                             bindTo = ((parentThreadAffinityMask.length() - 1) - i);
+                            break;
                         } else {
                             ++count;
                         }
@@ -81,17 +78,16 @@ public class PrimerWithMPI2 {
                     String threadAffinityMask = getPaddedString(cusPerNode,
                             Long.toBinaryString(Utils.getProcAffinityMask(threadId)));
                     if (bind) {
-                        AffinitySupport.setAffinity(1L<<bindTo);
+                        AffinitySupport.setAffinity(1L << bindTo);
                     }
-                    output[threadIndex+1] =
-                            "  Thread : " + Thread.currentThread().getName() + " id: " + threadId + " bound to: " + getHumanReadableString(
-                                    threadAffinityMask) + " changed to: " + getHumanReadableString(
+                    output[threadIndex + 1] =
+                            "  Thread : " + Thread.currentThread().getName() + " id: " + threadId + " originally bound to: " + getHumanReadableString(
+                                    threadAffinityMask) + (bind ? (" changed to: " + getHumanReadableString(
                                     getPaddedString(
-                                            cusPerNode, Long.toBinaryString(AffinitySupport.getAffinity()))
-                            );
+                                            cusPerNode, Long.toBinaryString(AffinitySupport.getAffinity())))) : "");
                     latch.countDown();
                     latch.await();
-                    if (threadIndex == 0){
+                    if (threadIndex == 0) {
                         printOutputInOrder(output, comm, rank, size);
                         go.countDown();
                     }
@@ -99,12 +95,8 @@ public class PrimerWithMPI2 {
                 } catch (IOException | InterruptedException e) {
                     e.printStackTrace();
                 }
-                compute(results, threadIndex);*/
-                System.out.println("Hi from " + threadIndex);
-            });
-        } catch (SuspendableException e) {
-            e.printStackTrace();
-        }
+                compute(results, threadIndex);
+            });});
 
     }
 
@@ -240,12 +232,12 @@ public class PrimerWithMPI2 {
                 if (bind) {
                     AffinitySupport.setAffinity(1L<<bindTo);
                 }
-                output[index+1] =
-                        "  Thread : " + Thread.currentThread().getName() + " id: " + threadId + " bound to: " + getHumanReadableString(
-                                threadAffinityMask) + " changed to: " + getHumanReadableString(
+                output[index + 1] =
+                        "  Thread : " + Thread.currentThread().getName() + " id: " + threadId + " originally bound to: " + getHumanReadableString(
+                                threadAffinityMask) + (bind ? (" changed to: " + getHumanReadableString(
                                 getPaddedString(
                                         cusPerNode, Long.toBinaryString(AffinitySupport.getAffinity()))
-                        );
+                        )) : "");
                 latch.countDown();
             } catch (IOException e) {
                 e.printStackTrace();
