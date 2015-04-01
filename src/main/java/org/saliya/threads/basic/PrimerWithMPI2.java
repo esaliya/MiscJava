@@ -246,12 +246,11 @@ public class PrimerWithMPI2 {
         }
 
         private void compute() {
-            double x = Math.random()*1e10;
-            while (!Files.exists(Paths.get("stop"))){
-                for (int i = 0; i < 1000; ++i){
-                    x = Math.sqrt(x);
-                }
-                x = Math.random()*1e10;
+            int i = -1;
+            double x=0.01;
+            while (i < Integer.MAX_VALUE){
+                x = Math.sqrt(Math.random()+x);
+                ++i;
             }
             results[index] = x;
         }
