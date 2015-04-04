@@ -260,3 +260,11 @@ Running 8x1x1 on Wed Apr  1 16:39:22 EDT 2015
 Finished 8x1x1 on Wed Apr  1 16:39:35 EDT 2015
 Running 8x1x1 on Wed Apr  1 16:39:36 EDT 2015
 Finished 8x1x1 on Wed Apr  1 16:39:42 EDT 2015
+Running 2x4x1 on Wed Apr  1 16:57:12 EDT 2015
+Finished 2x4x1 on Wed Apr  1 16:57:25 EDT 2015
+Running 2x4x1 on Wed Apr  1 16:57:26 EDT 2015
+Finished 2x4x1 on Wed Apr  1 16:57:38 EDT 2015
+Running 2x4x1 on Wed Apr  1 16:57:39 EDT 2015
+Finished 2x4x1 on Wed Apr  1 16:57:52 EDT 2015
+Running 2x4x1 on Wed Apr  1 16:57:53 EDT 2015
+Finished 2x4x1 on Wed Apr  1 16:58:05 EDT 2015
