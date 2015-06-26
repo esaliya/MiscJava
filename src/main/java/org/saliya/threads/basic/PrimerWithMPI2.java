@@ -47,7 +47,9 @@ public class PrimerWithMPI2 {
 
         if (rank == 0) {
             System.out.println(Arrays.stream(results).reduce(0.0, (sum, v)->sum+v));
-            Files.delete(Paths.get("stop"));
+            if (Files.exists(Paths.get("stop"))){
+                Files.delete(Paths.get("stop"));
+            }
         }
         MPI.Finalize();
     }
@@ -191,7 +193,7 @@ public class PrimerWithMPI2 {
     }
 
     private static void compute(double [] results, int index) {
-        int i = -1;
+        int i = (int)(Integer.MAX_VALUE*0.9);
         double x=0.01;
         while (i < Integer.MAX_VALUE){
             x = Math.sqrt(Math.random()+x);
@@ -245,7 +247,7 @@ public class PrimerWithMPI2 {
         }
 
         private void compute() {
-            int i = -1;
+            int i = (int)(Integer.MAX_VALUE*0.9);
             double x=0.01;
             while (i < Integer.MAX_VALUE){
                 x = Math.sqrt(Math.random()+x);
