@@ -9,8 +9,17 @@ public class BufferPrimer {
     public static void main(String[] args) {
 //        testBufferProperties();
 //        testBufferCopy();
-        testBufferInitialization();
+//        testBufferInitialization();
+        testBufferLimit();
 
+    }
+
+    private static void testBufferLimit(){
+        int limit = 2;
+        DoubleBuffer buff = DoubleBuffer.allocate(2);
+        buff.put(1.0);
+        buff.put(2.0);
+        /*buff.put(3.0);*/ // will cause an overflow
     }
 
     private static void testBufferInitialization() {
