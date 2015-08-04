@@ -8,8 +8,8 @@ public class ParallelPatternGenerator {
     private static final char x = 'x';
     public static void main(String[] args) {
         // TODO - read these from command line
-        int maxParallelismPerNode = 8; // Should be a power of 2
-        int maxNumberOfNodes = 44;
+        int maxParallelismPerNode = 24; // Should be a power of 2
+        int maxNumberOfNodes = 1;
         int limitNumberOfThreadsTo = maxParallelismPerNode;
         int limitNumberOfProcsTo = maxParallelismPerNode;
         String parallelismsString = "1,2,4,8,16,32,64,128,256"; // Each parallelism has to be a power of 2
