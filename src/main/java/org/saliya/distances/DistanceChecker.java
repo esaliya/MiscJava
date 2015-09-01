@@ -8,8 +8,10 @@ import java.nio.ByteOrder;
 
 public class DistanceChecker {
     public static void main(String[] args) {
-//        readByDistanceReader();
-        readManually();
+        long t = System.nanoTime();
+        readByDistanceReader();
+        System.out.println((System.nanoTime() - t) * 1.0 / 1e6 + "ms");
+//        readManually();
     }
 
     private static void readByDistanceReader() {
