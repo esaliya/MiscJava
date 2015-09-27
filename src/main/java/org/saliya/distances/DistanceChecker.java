@@ -8,33 +8,38 @@ import java.nio.ByteOrder;
 
 public class DistanceChecker {
     public static void main(String[] args) {
-        long t = System.nanoTime();
+//        long t = System.nanoTime();
         readByDistanceReader();
-        System.out.println((System.nanoTime() - t) * 1.0 / 1e6 + "ms");
+//        System.out.println((System.nanoTime() - t) * 1.0 / 1e6 + "ms");
 //        readManually();
     }
 
     private static void readByDistanceReader() {
-        int size = 6435;
-        String file = "C:\\Users\\Saliya\\Downloads\\distances\\2004_1_2005_1"
-                      + ".csv";
+//        int size = 6435;
+        int size = 10;
+//        String file = "C:\\Users\\Saliya\\Downloads\\distances\\2004_1_2005_1"
+//                      + ".csv";
+
+        String file = "C:\\Users\\Saliya\\Downloads\\1.txt";
         short[][] distance = BinaryReader2D.readRowRange(file, new Range(0, size
                                                                             -
                                                                             1),
                                                          size,
                                                          ByteOrder.BIG_ENDIAN,
                                                          true, 1.0);
-        double cut = 0.03;
+//        double cut = 0.03;
         long count = 0;
         for (int i = 0; i < size; ++i){
             for (int j = 0; j < size; ++j){
-                double d = distance[i][j] * 1.0 / Short.MAX_VALUE;
-                if (d >= cut) continue;
-                ++count;
+                short d = distance[i][j];
+                System.out.print(d + " ");
+//                if (d >= cut) continue;
+//                ++count;
             }
+            System.out.println();
         }
 
-        System.out.println(count);
+//        System.out.println(count);
     }
 
     public static void readManually(){
