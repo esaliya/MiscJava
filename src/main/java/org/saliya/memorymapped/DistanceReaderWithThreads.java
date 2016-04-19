@@ -26,7 +26,7 @@ public class DistanceReaderWithThreads {
         System.out.println("Came here and distances[10][200]=" + distances[10*globalRowCount+200]);*/
 
 
-        int worldProcsCount = 24/threadCount;
+        int worldProcsCount = numTasks/threadCount;
         int worldProcRank = worldProcsCount-1;
         Range[] procRowRanges = RangePartitioner.partition(globalRowCount,
                 worldProcsCount);
