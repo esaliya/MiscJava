@@ -56,7 +56,7 @@ public class DistanceReaderWithThreads {
                         0, threadCount - 1,
                         (threadId) -> {
                             System.out.println("Really: tid="  + threadId);
-                            /*final int threadRowCount = threadRowCounts[threadId];
+                            final int threadRowCount = threadRowCounts[threadId];
                             final int threadLocalRowStartOffset =
                                     threadRowStartOffsets[threadId];
                             final int globalThreadRowStartOffset = procRowStartOffset
@@ -72,15 +72,17 @@ public class DistanceReaderWithThreads {
                             short[] distances = new short[elementCount];
                             if (repetitions == 1) {
                                 System.out.println("Thread " + threadId + " came before here");
-                                edu.indiana.soic.spidal.common.BinaryReader1D.readRowRange(path,
-                                        globalThreadRowRange, globalColCount, ByteOrder.BIG_ENDIAN,
-                                        true, null, distances);
+//                                edu.indiana.soic.spidal.common.BinaryReader1D.readRowRange(path,
+//                                        globalThreadRowRange, globalColCount, ByteOrder.BIG_ENDIAN,
+//                                        true, null, distances);
                                 System.out.println("Thread " + threadId + " came here and distances[" + globalThreadRowRange.getStartIndex() + "][203]=" + distances[203]);
                             } else {
-                                BinaryReader1D.readRowRange(null,
-                                        globalThreadRowRange, globalColCount, ByteOrder.BIG_ENDIAN,
-                                        true, null, repetitions, distances);
-                            }*/
+                                System.out.println("**Thread " + threadId + " came before here");
+//                                BinaryReader1D.readRowRange(null,
+//                                        globalThreadRowRange, globalColCount, ByteOrder.BIG_ENDIAN,
+//                                        true, null, repetitions, distances);
+                                System.out.println("**Thread " + threadId + " came here and distances[" + globalThreadRowRange.getStartIndex() + "][203]=" + distances[203]);
+                            }
                         }));
         System.out.println("Came to the end");
     }
