@@ -76,13 +76,13 @@ public class DistanceReaderWithThreads {
                                     edu.indiana.soic.spidal.common.BinaryReader1D.readRowRange(path,
                                             globalThreadRowRange, globalColCount, ByteOrder.BIG_ENDIAN,
                                             true, null, distances);
-                                    System.out.println("Thread " + threadId + " came here and distances[" + globalThreadRowRange.getStartIndex() + "][203]=" + distances[203]/Short.MAX_VALUE);
+                                    System.out.println("Thread " + threadId + " came here and distances[" + globalThreadRowRange.getStartIndex() + "][203]=" + distances[203]*1.0/Short.MAX_VALUE);
                                 } else {
                                     System.out.println("**Thread " + threadId + " came before here");
     //                                BinaryReader1D.readRowRange(null,
     //                                        globalThreadRowRange, globalColCount, ByteOrder.BIG_ENDIAN,
     //                                        true, null, repetitions, distances);
-                                    System.out.println("**Thread " + threadId + " came here and distances[" + globalThreadRowRange.getStartIndex() + "][203]=" + distances[203]/Short.MAX_VALUE);
+                                    System.out.println("**Thread " + threadId + " came here and distances[" + globalThreadRowRange.getStartIndex() + "][203]=" + distances[203]*1.0/Short.MAX_VALUE);
                                 }
                             } catch (Exception e) {
                                 e.printStackTrace();
