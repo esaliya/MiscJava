@@ -70,6 +70,7 @@ public class DistanceReaderWithThreads {
                             int elementCount = globalThreadRowRange.getLength() * globalColCount;
                             short[] distances = new short[elementCount];
                             if (repetitions == 1) {
+                                System.out.println("Thread " + threadId + " came before here");
                                 edu.indiana.soic.spidal.common.BinaryReader1D.readRowRange(path,
                                         globalThreadRowRange, globalColCount, ByteOrder.BIG_ENDIAN,
                                         true, null, distances);
@@ -80,5 +81,6 @@ public class DistanceReaderWithThreads {
                                         true, null, repetitions, distances);
                             }
                         }));
+        System.out.println("Came to the end");
     }
 }
