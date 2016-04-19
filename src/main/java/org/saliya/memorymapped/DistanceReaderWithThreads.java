@@ -3,8 +3,10 @@ package org.saliya.memorymapped;
 import edu.indiana.soic.spidal.common.*;
 import edu.indiana.soic.spidal.common.BinaryReader1D;
 import edu.indiana.soic.spidal.common.Range;
+import net.openhft.affinity.Affinity;
 
 import java.nio.ByteOrder;
+import java.util.BitSet;
 import java.util.stream.IntStream;
 
 import static edu.rice.hj.Module0.launchHabaneroApp;
@@ -57,6 +59,15 @@ public class DistanceReaderWithThreads {
                         (threadId) -> {
                             System.out.println("Really: tid="  + threadId);
                             try {
+
+                                BitSet bitSet = new BitSet(48);
+                                // TODO - let's hard code for juliet for now
+                                bitSet.set((worldProcRank * 12) +
+                                        threadId);
+                                bitSet.set((worldProcRank * 24) +
+                                        threadId + 24);
+                                Affinity.setAffinity(bitSet);
+
                                 final int threadRowCount = threadRowCounts[threadId];
                                 final int threadLocalRowStartOffset =
                                         threadRowStartOffsets[threadId];
