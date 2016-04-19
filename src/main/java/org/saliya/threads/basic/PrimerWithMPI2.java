@@ -80,13 +80,13 @@ public class PrimerWithMPI2 {
                     String threadAffinityMask = getPaddedString(cusPerNode,
                             Long.toBinaryString(Utils.getProcAffinityMask(threadId)));
                     if (bind) {
-                        AffinitySupport.setAffinity(1L << bindTo);
+//                        AffinitySupport.setAffinity(1L << bindTo);
                     }
-                    output[threadIndex + 1] =
+                   /* output[threadIndex + 1] =
                             "  Thread : " + Thread.currentThread().getName() + " id: " + threadId + " originally bound to: " + getHumanReadableString(
                                     threadAffinityMask) + (bind ? (" changed to: " + getHumanReadableString(
                                     getPaddedString(
-                                            cusPerNode, Long.toBinaryString(AffinitySupport.getAffinity())))) : "");
+                                            cusPerNode, Long.toBinaryString(AffinitySupport.getAffinity())))) : "");*/
                     latch.countDown();
                     latch.await();
                     if (threadIndex == 0) {
@@ -231,14 +231,14 @@ public class PrimerWithMPI2 {
                 String threadAffinityMask = getPaddedString(cusPerNode,
                         Long.toBinaryString(Utils.getProcAffinityMask(threadId)));
                 if (bind) {
-                    AffinitySupport.setAffinity(1L<<bindTo);
+//                    AffinitySupport.setAffinity(1L<<bindTo);
                 }
-                output[index + 1] =
+                /*output[index + 1] =
                         "  Thread : " + Thread.currentThread().getName() + " id: " + threadId + " originally bound to: " + getHumanReadableString(
                                 threadAffinityMask) + (bind ? (" changed to: " + getHumanReadableString(
                                 getPaddedString(
                                         cusPerNode, Long.toBinaryString(AffinitySupport.getAffinity()))
-                        )) : "");
+                        )) : "");*/
                 latch.countDown();
             } catch (IOException e) {
                 e.printStackTrace();
