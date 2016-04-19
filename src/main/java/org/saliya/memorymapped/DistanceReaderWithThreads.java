@@ -55,7 +55,8 @@ public class DistanceReaderWithThreads {
                 () -> forallChunked(
                         0, threadCount - 1,
                         (threadId) -> {
-                            final int threadRowCount = threadRowCounts[threadId];
+                            System.out.println("Really: tid="  + threadId);
+                            /*final int threadRowCount = threadRowCounts[threadId];
                             final int threadLocalRowStartOffset =
                                     threadRowStartOffsets[threadId];
                             final int globalThreadRowStartOffset = procRowStartOffset
@@ -79,7 +80,7 @@ public class DistanceReaderWithThreads {
                                 BinaryReader1D.readRowRange(null,
                                         globalThreadRowRange, globalColCount, ByteOrder.BIG_ENDIAN,
                                         true, null, repetitions, distances);
-                            }
+                            }*/
                         }));
         System.out.println("Came to the end");
     }
