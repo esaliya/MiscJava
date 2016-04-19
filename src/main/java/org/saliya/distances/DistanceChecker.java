@@ -26,7 +26,7 @@ public class DistanceChecker {
                                                                             1),
                                                          size,
                                                          ByteOrder.BIG_ENDIAN,
-                                                         true, 1.0);
+                                                         true, null);
 //        double cut = 0.03;
         long count = 0;
         for (int i = 0; i < size; ++i){
