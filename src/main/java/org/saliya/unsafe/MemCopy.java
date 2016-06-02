@@ -5,7 +5,7 @@ import sun.misc.Unsafe;
 import java.lang.reflect.Field;
 
 public class MemCopy {
-    public static final Unsafe UNSAFE;
+    public static  Unsafe UNSAFE;
 
     static {
         try {
